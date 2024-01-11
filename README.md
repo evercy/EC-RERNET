@@ -11,4 +11,5 @@ torchvision 0.8.2
 
 # Citation
 [1] Huang, Z., Yang, S. Z., Zhou, M. C., Gong, Z., Abusorrah, A., Lin, C., Huang, Z.: Making accurate object detection at the edge: review and new approach. Artif. Intell. Rev. 55(3), 2245–2274 (2022)
+
 [2] Chao, P., Kao, C. Y., Ruan, Y., Huang, C. H., Lin, Y. L.: HarDNet: a low memory traffic network. In: The 2019 IEEE/CVF International Conference on Computer Vision (ICCV), pp. 3551–3560 (2019)
