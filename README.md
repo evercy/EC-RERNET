@@ -4,9 +4,9 @@ If this work is useful to you, please cite:
 > Sun, Q., Chen, Y., Yang, D. X., Wen, J., Yang, J. J., Li, Y. L.: EC-RFERNet: an edge computing-oriented real-time facial expression recognition network. Signal, Image and Video Processing. https://doi.org/10.1007/s11760-023-02832-4
 
 # Dependencies
-Python 3.6
-PyTorch 1.7.1
-torchvision 0.8.2
++ Python 3.6
++ PyTorch 1.7.1
++ torchvision 0.8.2
 
 
 # Citation
