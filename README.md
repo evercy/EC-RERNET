@@ -1,5 +1,6 @@
 # EC-RFERNet: an edge computing-oriented real-time facial expression recognition network
 The PyTorch implementation for the paper 'EC-RFERNet: an edge computing-oriented real-time facial expression recognition network'.
+
 Qiang Sun<sup>1,2</sup>,Yuan Chen<sup>1</sup>, Dongxu Yang<sup>1</sup>, Jing Wen<sup>1</sup>, Jiaojiao Yang<sup>1</sup>,Yonglu Li<sup>3</sup>
 1.	Department of Communication Engineering, School of Automation and Information Engineering, Xi’an University of Technology, Xi’an 710048, China
 2.	Xi’an Key Laboratory of Wireless Optical Communication and Network Research, Xi’an 710048, China
