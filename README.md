@@ -18,10 +18,6 @@ Abstract: Edge computing has shown significant successes in addressing the secur
 ![image](https://github.com/evercy/EC-RERNET/blob/main/images/Fig.%206.jpg)
 <p align="center">EC-RFERNet corresponds to the confusion matrix for (a) RAF-DB (b) FER2013 (c) CK+ (d) AffectNet (e) SFEW dataset.</p>
 
-# One Human-Robot Interaction Case 
-![image](https://github.com/evercy/EC-RERNET/blob/main/images/Fig.%207%20.jpg)
-<p align="center">Schematic diagram of the HCI system based on Raspberry Pi 4B</p>
-
 # Data availability
 All datasets are freely available in public repositories. 
 + RAF-DB: http://www.whdeng.cn/raf/model1.html
@@ -29,6 +25,9 @@ All datasets are freely available in public repositories.
 + CK+ : http://www.jeffcohn.net/Resources/
 + AffectNet: http://mohammadmahoor.com/affectnet/
 + SFEW: https://cs.anu.edu.au/few/AFEW.html
+
+# Contact
+If you have any questions, please feel free to reach me out at qsun@xaut.edu.cn and 2210321182@stu.xaut.edu.cn.
 
 # Acknowledgements
 This project is built upon [CNN-RIS](https://github.com/yangshunzhi1994/CNN-RIS) and [Pytorch-HarDNet](https://github.com/PingoLH/Pytorch-HarDNet). Thanks for their great codebase.
