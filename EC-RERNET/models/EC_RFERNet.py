@@ -11,12 +11,12 @@ class Flatten(nn.Module):
     def forward(self, x):
         return x.view(x.data.size(0), -1)
 
-
 def hard_sigmoid(x, inplace: bool = False):
     if inplace:
         return x.add_(3.).clamp_(0., 6.).div_(6.)
     else:
         return F.relu6(x + 3.) / 6.
+
 def _make_divisible(v, divisor, min_value=None):
     """
     This function is taken from the original tf repo.
@@ -49,16 +49,14 @@ class SqueezeExcite(nn.Module):
         x_se = self.act1(x_se)
         x_se = self.conv_expand(x_se)
         x = x * self.gate_fn(x_se)
-        #c_weight = self.gate_fn(x_se)
         return x
-class GhostModule(nn.Module):
+
+class MF(nn.Module):
     def __init__(self, inp, oup, kernel_size=1, ratio=2, dw_size=3, stride=1, relu=True):
-        super(GhostModule, self).__init__()
+        super(MF, self).__init__()
         self.oup = oup
         self.inp1 = inp // 3
         self.inp2 = inp - self.inp1
-        #init_channels = math.ceil(oup / ratio)
-        #new_channels = init_channels*(ratio-1)
 
         if self.inp1 <16:
             self.cheap_operation = nn.Sequential(
@@ -89,26 +87,20 @@ class GhostModule(nn.Module):
 
 
     def forward(self, x):
-        # x1 = self.primary_conv(x)
-        # x2 = self.cheap_operation(x1)
-        # out = torch.cat([x1,x2], dim=1)
-
         x1, x2 = torch.split(x,[self.inp1,self.inp2], dim=1)
         x1 = self.cheap_operation(x1)
         x = torch.cat([x1,x2], dim=1)
-
         x = self.primary_conv(x)
         x = self.se(x)
 
         return x
-class GhostModule1(nn.Module):
+
+class MF1(nn.Module):
     def __init__(self, inp, oup, kernel_size=1, ratio=2, dw_size=3, stride=1, relu=True):
-        super(GhostModule1, self).__init__()
+        super(MF1, self).__init__()
         self.oup = oup
         self.inp1 = inp // 3
         self.inp2 = inp - self.inp1
-        #init_channels = math.ceil(oup / ratio)
-        #new_channels = init_channels*(ratio-1)
 
         if self.inp1 <16:
             self.cheap_operation = nn.Sequential(
@@ -134,15 +126,7 @@ class GhostModule1(nn.Module):
                 nn.ReLU6(inplace=True) if relu else nn.Sequential(),
             )
 
-
-
-
-
     def forward(self, x):
-        # x1 = self.primary_conv(x)
-        # x2 = self.cheap_operation(x1)
-        # out = torch.cat([x1,x2], dim=1)
-
         x1, x2 = torch.split(x,[self.inp1,self.inp2], dim=1)
         x1 = self.cheap_operation(x1)
         x = torch.cat([x1,x2], dim=1)
@@ -151,15 +135,6 @@ class GhostModule1(nn.Module):
 
 
         return x
-
-class CombConvLayer(nn.Sequential):
-    def __init__(self, in_channels, out_channels, kernel=1, stride=1, dropout=0.1, bias=False):
-        super().__init__()
-        self.add_module('layer1', ConvLayer(in_channels, out_channels, kernel))
-        self.add_module('layer2', DWConvLayer(out_channels, out_channels, stride=stride))
-
-    def forward(self, x):
-        return super().forward(x)
 
 
 class DWConvLayer(nn.Sequential):
@@ -177,6 +152,8 @@ class DWConvLayer(nn.Sequential):
 
     def forward(self, x):
         return super().forward(x)
+
+
 class ConvLayer(nn.Sequential):
     def __init__(self, in_channels, out_channels, kernel=3, stride=1, dropout=0.1, bias=False):
         super().__init__()
@@ -192,31 +169,29 @@ class ConvLayer(nn.Sequential):
         return super().forward(x)
 
 
-class ConvLayer1(nn.Sequential):
+class MFBlock(nn.Sequential):
     def __init__(self, in_channels, out_channels, kernel=1, ratio=2, dw_size=3, stride=1, relu=True):
         super().__init__()
         out_ch = out_channels
         groups = 1
         # print(kernel, 'x', kernel, 'x', in_channels, 'x', out_channels)
-        self.add_module('conv', GhostModule(in_channels, out_ch, kernel_size=kernel, ratio=2, dw_size=3, stride=1, relu=True))
+        self.add_module('conv', MF(in_channels, out_ch, kernel_size=kernel, ratio=2, dw_size=3, stride=1, relu=True))
         #self.add_module('relu', nn.ReLU6(True))
 
     def forward(self, x):
         return super().forward(x)
 
-class ConvLayer2(nn.Sequential):
+class MF1Block(nn.Sequential):
     def __init__(self, in_channels, out_channels, kernel=1, ratio=2, dw_size=3, stride=1, relu=True):
         super().__init__()
         out_ch = out_channels
         groups = 1
-        # print(kernel, 'x', kernel, 'x', in_channels, 'x', out_channels)
-        self.add_module('conv', GhostModule1(in_channels, out_ch, kernel_size=kernel, ratio=2, dw_size=3, stride=1, relu=True))
-        #self.add_module('relu', nn.ReLU6(True))
+        self.add_module('conv', MF1(in_channels, out_ch, kernel_size=kernel, ratio=2, dw_size=3, stride=1, relu=True))
 
     def forward(self, x):
         return super().forward(x)
 
-class HarDBlock(nn.Module):
+class H_MF(nn.Module):
     def get_link(self, layer, base_ch, growth_rate, grmul):
         if layer == 0:
             return base_ch, 0, []
@@ -251,9 +226,9 @@ class HarDBlock(nn.Module):
             use_relu = residual_out
             #print('outch',outch)
             if (i % 2 == 0) :
-                layers_.append(ConvLayer1(inch, outch))
+                layers_.append(MFBlock(inch, outch))
             else:
-                layers_.append(ConvLayer1(inch, outch))
+                layers_.append(MFBlock(inch, outch))
 
             if (i % 2 == 0) or (i == n_layers - 1):
                 self.out_channels += outch
@@ -286,7 +261,8 @@ class HarDBlock(nn.Module):
                 out_.append(layers_[i])
         out = torch.cat(out_, 1)
         return out
-class HarDBlock1(nn.Module):
+
+class H_MF1(nn.Module):
     def get_link(self, layer, base_ch, growth_rate, grmul):
         if layer == 0:
             return base_ch, 0, []
@@ -319,16 +295,13 @@ class HarDBlock1(nn.Module):
             outch, inch, link = self.get_link(i + 1, in_channels, growth_rate, grmul)
             self.links.append(link)
             use_relu = residual_out
-            #print('outch',outch)
             if (i % 2 == 0) :
-                layers_.append(ConvLayer2(inch, outch))
+                layers_.append(MF1Block(inch, outch))
             else:
-                layers_.append(ConvLayer2(inch, outch))
+                layers_.append(MF1Block(inch, outch))
 
             if (i % 2 == 0) or (i == n_layers - 1):
                 self.out_channels += outch
-                #print('self.out_channels',self.out_channels)
-        # print("Blk out =",self.out_channels)
         self.layers = nn.ModuleList(layers_)
 
     def forward(self, x):
@@ -340,8 +313,6 @@ class HarDBlock1(nn.Module):
             for i in link:
                 tin.append(layers_[i])
             if len(tin) > 1:
-                # print('x',x.size())
-                # print('tin',len(tin))
                 x = torch.cat(tin, 1)
             else:
                 x = tin[0]
@@ -356,6 +327,7 @@ class HarDBlock1(nn.Module):
                 out_.append(layers_[i])
         out = torch.cat(out_, 1)
         return out
+
 
 class EC_RFERNet(nn.Module):
     def __init__(self, depth_wise=False, arch=39, pretrained=False, weight_path=''):
@@ -365,10 +337,8 @@ class EC_RFERNet(nn.Module):
         drop_rate = 0.1
         first_ch = [24, 48]
         ch_list = [96, 160, 240]
-        #ch_list = [96, 160, 240]
         grmul = 1.6
         gr = [16, 20, 64]
-        #gr = [16, 20, 64]
         n_layers = [4, 8,4]
         downSamp = [1, 1,0]
 
@@ -392,9 +362,9 @@ class EC_RFERNet(nn.Module):
         ch = first_ch[1]
         for i in range(blks):
             if i == 0 :
-                blk = HarDBlock(ch, gr[i], grmul, n_layers[i], dwconv=depth_wise)
+                blk = H_MF(ch, gr[i], grmul, n_layers[i], dwconv=depth_wise)
             else:
-                blk = HarDBlock1(ch, gr[i], grmul, n_layers[i], dwconv=depth_wise)
+                blk = H_MF1(ch, gr[i], grmul, n_layers[i], dwconv=depth_wise)
             ch = blk.get_out_ch()
             self.base.append(blk)
 
