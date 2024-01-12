@@ -22,6 +22,9 @@ Abstract: Edge computing has shown significant successes in addressing the secur
 ![image](https://github.com/evercy/EC-RERNET/blob/main/images/Fig.%207%20.jpg)
 <p align="center">Schematic diagram of the HCI system based on Raspberry Pi 4B</p>
 
+# Acknowledgements
+This project is built upon [CNN-RIS](https://github.com/yangshunzhi1994/CNN-RIS) and [Pytorch-HarDNet](https://github.com/PingoLH/Pytorch-HarDNet). Thanks for their great codebase.
+
 # Citation
 [1] Huang, Z., Yang, S. Z., Zhou, M. C., Gong, Z., Abusorrah, A., Lin, C., Huang, Z.: Making accurate object detection at the edge: review and new approach. Artif. Intell. Rev. 55(3), 2245–2274 (2022)
 
