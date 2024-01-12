@@ -22,6 +22,14 @@ Abstract: Edge computing has shown significant successes in addressing the secur
 ![image](https://github.com/evercy/EC-RERNET/blob/main/images/Fig.%207%20.jpg)
 <p align="center">Schematic diagram of the HCI system based on Raspberry Pi 4B</p>
 
+# Data availability
+All datasets are freely available in public repositories. 
++ RAF-DB: http://www.whdeng.cn/raf/model1.html
++ FER2013: https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data
++ CK+ : http://www.jeffcohn.net/Resources/
++ AffectNet: http://mohammadmahoor.com/affectnet/
++ SFEW: https://cs.anu.edu.au/few/AFEW.html
+
 # Acknowledgements
 This project is built upon [CNN-RIS](https://github.com/yangshunzhi1994/CNN-RIS) and [Pytorch-HarDNet](https://github.com/PingoLH/Pytorch-HarDNet). Thanks for their great codebase.
 
