@@ -1,7 +1,9 @@
-# EC-RERNET
+# EC-RFERNet: an edge computing-oriented real-time facial expression recognition network
 The PyTorch implementation for the paper 'EC-RFERNet: an edge computing-oriented real-time facial expression recognition network'.
-If this work is useful to you, please cite:
-> Sun, Q., Chen, Y., Yang, D. X., Wen, J., Yang, J. J., Li, Y. L.: EC-RFERNet: an edge computing-oriented real-time facial expression recognition network. Signal, Image and Video Processing. https://doi.org/10.1007/s11760-023-02832-4
+Qiang Sun<1,2> ,Yuan Chen1, Dongxu Yang1, Jing Wen1, Jiaojiao Yang1,Yonglu Li3
+1.	Department of Communication Engineering, School of Automation and Information Engineering, Xi’an University of Technology, Xi’an 710048, China
+2.	Xi’an Key Laboratory of Wireless Optical Communication and Network Research, Xi’an 710048, China
+3.	Xi’an Founder Robot Co., LTD, Xi’an 710068, China
 
 # Overview
 ![image](https://github.com/evercy/EC-RERNET/blob/main/images/Fig.%201.jpg)
@@ -33,6 +35,6 @@ If you have any questions, please feel free to reach me out at qsun@xaut.edu.cn 
 This project is built upon [CNN-RIS](https://github.com/yangshunzhi1994/CNN-RIS) and [Pytorch-HarDNet](https://github.com/PingoLH/Pytorch-HarDNet). Thanks for their great codebase.
 
 # Citation
-[1] Huang, Z., Yang, S. Z., Zhou, M. C., Gong, Z., Abusorrah, A., Lin, C., Huang, Z.: Making accurate object detection at the edge: review and new approach. Artif. Intell. Rev. 55(3), 2245–2274 (2022)
+If this work is useful to you, please cite:
+> Sun, Q., Chen, Y., Yang, D. X., Wen, J., Yang, J. J., Li, Y. L.: EC-RFERNet: an edge computing-oriented real-time facial expression recognition network. Signal, Image and Video Processing. https://doi.org/10.1007/s11760-023-02832-4
 
-[2] Chao, P., Kao, C. Y., Ruan, Y., Huang, C. H., Lin, Y. L.: HarDNet: a low memory traffic network. In: The 2019 IEEE/CVF International Conference on Computer Vision (ICCV), pp. 3551–3560 (2019)
